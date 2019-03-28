@@ -3,6 +3,14 @@
 # Medicare Claims Analysis
 # EDA file to stimulate hypothesis generation and understand pieces of the data
 ################################################################################
+source(here::here("Cricket-Health-Technical-Assessment", "0 - Config.R"))
+
+################################################################################
+# Import cleaned data
+################################################################################
+
+beneficiary_combined = read_rds(path = beneficiary_combined_path)
+beneficiary_claims = read_rds(path = merged_data_path)
 
 # How many beneficiaries are present over all three years? 
 # Use the intersect function
