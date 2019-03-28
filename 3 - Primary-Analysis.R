@@ -68,7 +68,7 @@ beneficiary_claims %>%
 # Limitations: calculations were made under the assumption that claim payment amounts < 0 were invalid 
 
 # Has the per capita spending changed over time? 
-beneficiary_claims %>%
+end_of_life_spending_over_time = beneficiary_claims %>%
   filter(
     death_date - 180 < claim_start_date |
       death_date - 180 < service_date,
@@ -79,6 +79,8 @@ beneficiary_claims %>%
   summarize(
     "mean_per_capita_spending_in_last_180_days" = mean(medicare_spending_in_last_180_days)
   )
+
+qplot(x = year, y = mean_per_capita_spending_in_last_180_days, data = end_of_life_spending_over_time, geom = "line")
 
 # We again see drastically lower per capita spending in 2010 which doesn't make a whole lot of sense. One thing I'd be interested in examining is whether our dataset's spending in the last 180 days matches the proportion of their total medicare expenditures, which would be a defense for its validity (~25%, as stated by the KFF http://files.kff.org/attachment/Data-Note-Medicare-Spending-at-the-End-of-Life). If this proportion is drastically different from 25%, it is increasingly likely our data shouldn't be used to answer the questions we've asked here
 
@@ -105,4 +107,10 @@ merged_beneficiary_spending %>%
   pull(proportion_of_spending_in_last_180_days) %>% 
   mean()
 
-# Yup, so that's solid evidence that our data isn't very representive of reality (which we already knew) and not a great source of information for answering these questions. At this point its difficult to conclude why such a big drop occurred, and I think talking to a domain expert or researcher in this area about my results, why I might've observed what I did, and whether its still possible the data is valid or not would be the optimal next step 
+# The mean was 43.1% which is solid evidence that our data isn't very representive of reality (which we already knew) and not a great source of information for answering these questions. At this point its difficult to conclude why such a big drop occurred, and I think talking to a domain expert or researcher in this area about my results, why I might've observed what I did, and whether its still possible the data is valid or not would be the optimal next step 
+
+################################################################################
+# Generate PDF Report of this script for later review of results
+################################################################################
+
+# NOTE: A report of this script has been generated and left in the Reports directory

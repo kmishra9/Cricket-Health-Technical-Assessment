@@ -56,7 +56,7 @@ beneficiary_combined_limited %>%
   group_by(year) %>% 
   summarize("proportion_on_plan_d" = sum(plan_d_coverage_length != "00")/ n())
   
-# More questions that I'd usually love to answer but I already have a feeling this is overkill
+# More questions that I'd usually love to answer but I already have a feeling this is way beyond the scope of this technical assessment
 
 # Are the Medicare reimbursement amounts correlated with beneficiary responsibility amounts and/or the number of claims a beneficiary makes?
 
