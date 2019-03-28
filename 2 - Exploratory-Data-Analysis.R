@@ -9,12 +9,6 @@ source(here::here("Cricket-Health-Technical-Assessment", "0 - Config.R"))
 # Import cleaned data
 ################################################################################
 
-# inpatient_2008_to_2010_limited = read_rds(path = inpatient_claims_path)
-# outpatient_2008_to_2010_limited = read_rds(path = outpatient_claims_path)
-# prescription_2008_to_2010_limited = read_rds(path = prescription_claims_path)
-# 
-# all_claims = read_rds(path = all_claims_path)
-
 beneficiary_combined_limited = read_rds(path = beneficiary_combined_path)
 beneficiary_claims = read_rds(path = merged_data_path)
 
@@ -72,4 +66,8 @@ beneficiary_combined_limited %>%
 
 # Is end stage renal disease correlated with increased claims?
 
+################################################################################
+# Generate PDF Report of this script for later review of results
+################################################################################
 
+# NOTE: A report of this script has been generated and left in the Reports directory
