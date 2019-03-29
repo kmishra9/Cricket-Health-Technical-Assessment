@@ -18,12 +18,22 @@ beneficiary_claims = read_rds(path = merged_data_path)
 medicare_spending_on_esrd_by_state = beneficiary_claims %>% 
   filter(esrd == "Y", claim_payment_amount >= 0) %>%
   group_by(year, state) %>% 
-  summarize("total_esrd_costs" = sum(claim_payment_amount)) %>% 
-  arrange(year, total_esrd_costs)
+  summarize("total_esrd_costs" = sum(claim_payment_amount), 
+            "total_number_of_patients" = unique(beneficiary_id) %>% length) %>%
+  mutate("per_capita_esrd_cost" = total_esrd_costs / total_number_of_patients) %>% 
+  arrange(year, per_capita_esrd_cost)
 
+medicare_spending_on_esrd_by_state %>% filter(year == 2010) %>% arrange(desc(per_capita_esrd_cost))
+
+# Total Spending
 # 2008: most: 05 (spent: $8,642,950), least: 41 (spent: $92,020)
 # 2009: most: 05 (spent: $8,799,100), least: 53 (spent: $41,020)
 # 2010: most: 05 (spent: $3,947,640), least: 02 (spent: $29,380)
+
+# Per Capita Spending
+# 2008: most: 09 (spent: $31,800), least: 41 (spent: $5,413)
+# 2009: most: 28 (spent: $17,093), least: 53 (spent: $4,558)
+# 2010: most: 28 (spent: $11,003), least: 02 (spent: $2,260)
 
 qplot(
   x = total_esrd_costs,
@@ -42,8 +52,8 @@ esrd_patients_per_year = beneficiary_claims %>%
   filter(esrd == "Y", claim_payment_amount >= 0) %>%
   group_by(year) %>%
   summarize(
-    "total_esrd_patients" = n(),
-    "esrd_per_capita_spending" = sum(claim_payment_amount) / n()
+    "total_esrd_patients" = unique(beneficiary_id) %>% length,
+    "esrd_per_capita_spending" = sum(claim_payment_amount) / (unique(beneficiary_id) %>% length)
   )
 
 # So yes, it looks like our drop in spending in 2010 can be attributable to a large drop in the number of esrd patients making claims on medicare *and* decreasing per capita spending on the esrd patients who remained. This forces me to question the validity of our data as ESRD prevalence continued to grow (despite a slight decline in incidence) in 2010 nationally (https://www.niddk.nih.gov/health-information/health-statistics/kidney-disease)
